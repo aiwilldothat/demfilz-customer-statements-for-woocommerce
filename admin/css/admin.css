@@ -1,0 +1,123 @@
+/* Demfilz Customer Statements — admin styles */
+
+.dcsf-wrap .dcsf-builder th {
+	width: 200px;
+}
+
+.dcsf-period-radios .dcsf-radio {
+	margin-right: 16px;
+	white-space: nowrap;
+}
+
+.dcsf-period-row.dcsf-hidden {
+	display: none;
+}
+
+.dcsf-dash {
+	margin: 0 6px;
+	color: #787c82;
+}
+
+.dcsf-status {
+	display: inline-block;
+	margin: 0 14px 6px 0;
+	white-space: nowrap;
+}
+
+.dcsf-logo-preview {
+	margin-top: 10px;
+}
+
+.dcsf-logo-preview img {
+	max-height: 70px;
+	max-width: 220px;
+	height: auto;
+	width: auto;
+	border: 1px solid #dcdcde;
+	padding: 4px;
+	background: #fff;
+}
+
+/* Results */
+.dcsf-results {
+	margin-top: 26px;
+	border-top: 1px solid #dcdcde;
+	padding-top: 18px;
+}
+
+.dcsf-results-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.dcsf-results-head h2 {
+	margin: 0;
+}
+
+.dcsf-actions {
+	margin: 0;
+}
+
+.dcsf-meta {
+	margin-top: 4px;
+}
+
+.dcsf-section {
+	margin: 22px 0;
+}
+
+.dcsf-customer {
+	margin: 0 0 8px;
+	font-size: 15px;
+}
+
+.dcsf-email {
+	font-weight: 400;
+	color: #787c82;
+	font-size: 13px;
+}
+
+.dcsf-table .dcsf-num {
+	text-align: right;
+	white-space: nowrap;
+	font-variant-numeric: tabular-nums;
+}
+
+.dcsf-table tfoot .dcsf-totals th {
+	border-top: 2px solid #c3c4c7;
+	background: #f6f7f7;
+	font-size: 13px;
+}
+
+.dcsf-empty {
+	color: #787c82;
+	font-style: italic;
+}
+
+.dcsf-grand {
+	margin-top: 24px;
+}
+
+.dcsf-grand-table {
+	max-width: 420px;
+}
+
+.dcsf-grand-table .dcsf-num {
+	text-align: right;
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Account (outstanding balance) view */
+.dcsf-account tbody tr.dcsf-owing td {
+	background: #fcf3e3;
+}
+
+.dcsf-account tfoot .dcsf-balance,
+.dcsf-account tbody tr.dcsf-owing td:last-child {
+	font-weight: 700;
+	color: #9a4a00;
+}

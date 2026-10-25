@@ -1,0 +1,52 @@
+/* Demfilz Customer Statements — statement document (print / Save-as-PDF).
+   Table-based, no flexbox, so it renders the same in browsers and in dompdf.
+   The .is-screen / .is-pdf body classes carry the screen-vs-PDF differences. */
+
+* { box-sizing: border-box; }
+
+body {
+	font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	color: #1d2327;
+	margin: 0;
+	font-size: 13px;
+	line-height: 1.5;
+}
+
+body.is-screen { padding: 24px; background: #f6f7f7; }
+body.is-pdf { padding: 0; background: #fff; font-family: "DejaVu Sans", sans-serif; }
+
+.doc { background: #fff; }
+body.is-screen .doc { max-width: 900px; margin: 0 auto; border: 1px solid #dcdcde; padding: 32px 36px; }
+body.is-pdf .doc { border: none; max-width: none; padding: 0; margin: 0; }
+
+.doc-head { width: 100%; border-collapse: collapse; border-bottom: 2px solid #2271b1; margin-bottom: 24px; }
+.doc-head td { vertical-align: top; padding: 0 0 16px; }
+.doc-logo { max-height: 64px; max-width: 200px; margin-bottom: 8px; }
+.doc-company-name { font-size: 18px; font-weight: bold; }
+.doc-abn, .doc-addr { color: #50575e; font-size: 12px; margin-top: 2px; }
+.doc-title { text-align: right; }
+.doc-title-h { font-size: 22px; font-weight: bold; color: #2271b1; letter-spacing: 1px; text-transform: uppercase; }
+.doc-period { font-weight: bold; font-size: 14px; margin-top: 2px; }
+.doc-generated { color: #787c82; font-size: 11px; margin-top: 6px; }
+.doc-section { margin-bottom: 28px; }
+.doc-cust { font-size: 15px; margin: 0 0 8px; padding-bottom: 6px; border-bottom: 1px solid #e0e0e0; }
+.doc-cust-email { font-weight: normal; color: #787c82; font-size: 12px; }
+.doc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.doc-table th, .doc-table td { padding: 7px 9px; text-align: left; border-bottom: 1px solid #e8e8e8; }
+.doc-table thead th { background: #f0f4f8; border-bottom: 2px solid #c3c4c7; font-size: 11px; text-transform: uppercase; color: #50575e; }
+.doc-table .num { text-align: right; }
+.doc-table tfoot th { border-top: 2px solid #c3c4c7; border-bottom: none; background: #f6f7f7; font-size: 12px; }
+.doc-grand { margin-top: 8px; page-break-inside: avoid; }
+.doc-grand-table { width: 46%; margin-left: 54%; }
+.doc-grand-table th { font-weight: bold; }
+.doc-empty { color: #787c82; }
+.doc-notes { margin-top: 24px; padding: 14px 16px; background: #f6f7f7; border-left: 3px solid #2271b1; font-size: 12px; color: #50575e; }
+.doc-foot { margin-top: 28px; text-align: center; }
+.doc-print-btn { background: #2271b1; color: #fff; border: none; padding: 10px 22px; border-radius: 4px; font-size: 14px; cursor: pointer; }
+
+@media print {
+	body { background: #fff; padding: 0; }
+	.doc { border: none; max-width: none; padding: 0; }
+	.no-print { display: none !important; }
+	.doc-table tr { page-break-inside: avoid; }
+}
