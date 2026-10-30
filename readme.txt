@@ -4,7 +4,7 @@ Tags: woocommerce, statement, financial year, accounting, export
 Requires at least: 6.2
 Tested up to: 7.1
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -91,6 +91,9 @@ Yes. The plugin uses the WooCommerce orders API and is fully HPOS-compatible.
 
 == Changelog ==
 
+= 1.2.2 =
+* Licence check hardening: a key the licence server rejects now switches Pro off immediately instead of staying active for a rolling grace period. Grace applies only while the licence server is unreachable, is anchored to the first failed check, and re-checks back off for 15 minutes so an outage never slows admin pages.
+
 = 1.2.1 =
 * Licence activation now shows the exact reason when a key is not accepted (for example a connection problem reaching the licence server), instead of a generic message, making activation issues much easier to resolve.
 
@@ -106,6 +109,9 @@ Yes. The plugin uses the WooCommerce orders API and is fully HPOS-compatible.
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.2 =
+Licence re-check hardening; recommended for all Pro users.
 
 = 1.2.0 =
 Adds an account-statement mode (Pro) showing invoiced, paid and outstanding balances. Free features are unchanged.

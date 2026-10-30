@@ -3,7 +3,7 @@
  * Plugin Name:       Demfilz Customer Statements for WooCommerce
  * Plugin URI:        https://demfilz.com/customer-statements-for-woocommerce
  * Description:       Generate, display and export a financial-year, quarterly or monthly statement of paid orders for selected WooCommerce customers. Print, save as PDF or download CSV. Counts actual paid invoices only.
- * Version:           1.2.1
+ * Version:           1.2.2
  * Requires at least: 6.2
  * Requires PHP:      7.4
  * Requires Plugins:  woocommerce
@@ -20,7 +20,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DCSF_VERSION', '1.2.1' );
+define( 'DCSF_VERSION', '1.2.2' );
 define( 'DCSF_FILE', __FILE__ );
 define( 'DCSF_PATH', plugin_dir_path( __FILE__ ) );
 define( 'DCSF_URL', plugin_dir_url( __FILE__ ) );

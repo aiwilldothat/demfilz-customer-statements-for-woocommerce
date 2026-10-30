@@ -32,7 +32,12 @@ class DCSF_Licence {
 	}
 
 	/**
-	 * Whether Pro is currently active (valid, or within grace after a failed check).
+	 * Whether Pro is currently active.
+	 *
+	 * An authoritative "invalid" from the licence server turns Pro off
+	 * immediately. Grace applies ONLY to transport failures (server
+	 * unreachable), is anchored to the FIRST failure, and re-checks are
+	 * rate-limited so an outage never blocks page renders repeatedly.
 	 *
 	 * @return bool
 	 */
@@ -42,20 +47,27 @@ class DCSF_Licence {
 			return false;
 		}
 
-		if ( empty( $s['checked_at'] ) || ( time() - (int) $s['checked_at'] ) > self::CACHE_TTL ) {
+		$stale     = empty( $s['checked_at'] ) || ( time() - (int) $s['checked_at'] ) > self::CACHE_TTL;
+		$may_retry = empty( $s['retry_at'] ) || time() >= (int) $s['retry_at'];
+
+		if ( $stale && $may_retry && ! get_transient( 'dcsf_lic_lock' ) ) {
+			set_transient( 'dcsf_lic_lock', 1, 2 * MINUTE_IN_SECONDS );
 			self::validate();
+			delete_transient( 'dcsf_lic_lock' );
 			$s = self::state();
 		}
 
-		if ( ! empty( $s['active'] ) ) {
-			return true;
+		if ( empty( $s['active'] ) ) {
+			return false;
 		}
 
-		if ( ! empty( $s['grace_until'] ) && time() < (int) $s['grace_until'] ) {
-			return true;
+		// Active from the last successful check; expire it when the server
+		// has been unreachable past the grace window.
+		if ( ! empty( $s['grace_until'] ) && time() >= (int) $s['grace_until'] ) {
+			return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
@@ -107,7 +119,7 @@ class DCSF_Licence {
 		$response = wp_remote_post(
 			self::ENDPOINT,
 			array(
-				'timeout' => 20,
+				'timeout' => 10,
 				'body'    => array(
 					'action'  => $action,
 					'key'     => $key,
@@ -121,7 +133,13 @@ class DCSF_Licence {
 		$prev = self::state();
 
 		if ( is_wp_error( $response ) ) {
-			$prev['grace_until'] = isset( $prev['grace_until'] ) ? $prev['grace_until'] : ( time() + self::GRACE_PERIOD );
+			// Transport failure: keep the previous verdict, back off retries,
+			// and anchor a one-off grace window to the FIRST failure so an
+			// extended outage eventually expires Pro.
+			if ( empty( $prev['grace_until'] ) ) {
+				$prev['grace_until'] = time() + self::GRACE_PERIOD;
+			}
+			$prev['retry_at'] = time() + 15 * MINUTE_IN_SECONDS;
 			update_option( self::OPTION, $prev, false );
 			return $response;
 		}
@@ -137,7 +155,9 @@ class DCSF_Licence {
 				'plan'        => isset( $body['plan'] ) ? sanitize_text_field( $body['plan'] ) : '',
 				'expires'     => isset( $body['expires'] ) ? sanitize_text_field( $body['expires'] ) : '',
 				'checked_at'  => time(),
-				'grace_until' => $ok ? 0 : ( time() + self::GRACE_PERIOD ),
+				// Authoritative answer: no grace either way.
+				'grace_until' => 0,
+				'retry_at'    => 0,
 				'message'     => isset( $body['message'] ) ? sanitize_text_field( $body['message'] ) : '',
 			),
 			false
